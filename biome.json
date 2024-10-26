@@ -1,0 +1,64 @@
+{
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "files": {
+        "ignore": ["node_modules/**", "package.json"]
+    },
+    "organizeImports": {
+        "enabled": true
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "complexity": {
+                "noExcessiveCognitiveComplexity": {
+                    "level": "error",
+                    "options": {
+                        "maxAllowedComplexity": 17
+                    }
+                },
+                "noUselessTernary": "error",
+                "useSimplifiedLogicExpression": "error"
+            },
+            "correctness": {
+                "useHookAtTopLevel": "error",
+                "noUnusedVariables": "error",
+                "noUnusedImports": "error",
+                "noUndeclaredVariables": "error",
+                "noUnusedPrivateClassMembers": "error"
+            },
+            "style": {
+                "useFragmentSyntax": "error",
+                "useShorthandArrayType": "error",
+                "useShorthandAssign": "error",
+                "useImportType": "error",
+                "useExportType": "error"
+            }
+        }
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "double",
+            "semicolons": "always",
+            "trailingCommas": "es5"
+        }
+    },
+    "css": {
+        "parser": {
+            "cssModules": true
+        },
+        "linter": {
+            "enabled": true
+        },
+        "formatter": {
+            "enabled": true,
+            "indentStyle": "space",
+            "indentWidth": 4
+        }
+    }
+}
