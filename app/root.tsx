@@ -9,16 +9,12 @@ import {
     redirect,
     useNavigation,
 } from "@remix-run/react";
-import {
-    HydrationBoundary,
-    QueryClient,
-    QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css?url";
 import { useEffect, useState } from "react";
-import { useDehydratedState } from "use-dehydrated-state";
+import { GlobalLoadingIndicator } from "./components/GlobalLoadingIndicator";
 import { Layout } from "./components/Layout";
 import globalCssUrl from "./styles/global.css?url";
 
@@ -85,7 +81,6 @@ export default function App() {
                 },
             })
     );
-    const dehydratedState = useDehydratedState();
 
     return (
         <html lang="en">
@@ -100,11 +95,10 @@ export default function App() {
             </head>
             <body>
                 <QueryClientProvider client={queryClient}>
-                    <HydrationBoundary state={dehydratedState}>
-                        <Layout>
-                            <Outlet />
-                        </Layout>
-                    </HydrationBoundary>
+                    <GlobalLoadingIndicator />
+                    <Layout>
+                        <Outlet />
+                    </Layout>
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
                 <ScrollRestoration />
