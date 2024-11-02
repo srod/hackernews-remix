@@ -2,6 +2,7 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import {
     Await,
     type ClientLoaderFunctionArgs,
+    defer,
     useRevalidator,
 } from "@remix-run/react";
 import { LRUCache } from "lru-cache";
@@ -49,11 +50,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     const comments = fetchComments(post.kids ?? []);
 
-    return {
+    return defer({
         id,
         post,
         comments,
-    };
+    });
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
