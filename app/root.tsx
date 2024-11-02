@@ -1,21 +1,23 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
 import {
     Links,
     Meta,
     Outlet,
     Scripts,
     ScrollRestoration,
-    json,
-    redirect,
     useNavigation,
 } from "@remix-run/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+    PersistQueryClientProvider,
+    type PersistQueryClientProviderProps,
+} from "@tanstack/react-query-persist-client";
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css?url";
-import { useEffect, useState } from "react";
-import { GlobalLoadingIndicator } from "./components/GlobalLoadingIndicator";
-import { Layout } from "./components/Layout";
+import { type ReactNode, useEffect } from "react";
+import { Layout as Layout2 } from "./components/Layout";
 import globalCssUrl from "./styles/global.css?url";
 
 export const links: LinksFunction = () => [
@@ -49,17 +51,24 @@ export const links: LinksFunction = () => [
     },
 ];
 
-export const loader: LoaderFunction = async ({ request }) => {
-    const url = new URL(request.url);
-
-    if (url.pathname === "/") {
-        return redirect("/top");
-    }
-
-    return json({});
+const persistOptions: PersistQueryClientProviderProps["persistOptions"] = {
+    persister: createSyncStoragePersister({
+        storage:
+            typeof window !== "undefined" ? window.localStorage : undefined,
+    }),
+    maxAge: Number.POSITIVE_INFINITY,
 };
 
-export default function App() {
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            gcTime: Number.POSITIVE_INFINITY,
+            staleTime: 1000 * 60 * 5, // 5 minutes
+        },
+    },
+});
+
+export function Layout({ children }: { children: ReactNode }) {
     const { state } = useNavigation();
 
     useEffect(() => {
@@ -69,18 +78,6 @@ export default function App() {
             NProgress.done();
         }
     }, [state]);
-
-    const [queryClient] = useState(
-        () =>
-            new QueryClient({
-                defaultOptions: {
-                    queries: {
-                        gcTime: Number.POSITIVE_INFINITY,
-                        staleTime: 60 * 1000,
-                    },
-                },
-            })
-    );
 
     return (
         <html lang="en">
@@ -94,16 +91,24 @@ export default function App() {
                 <Links />
             </head>
             <body>
-                <QueryClientProvider client={queryClient}>
-                    <GlobalLoadingIndicator />
-                    <Layout>
-                        <Outlet />
-                    </Layout>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
+                {children}
                 <ScrollRestoration />
                 <Scripts />
             </body>
         </html>
+    );
+}
+
+export default function App() {
+    return (
+        <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={persistOptions}
+        >
+            <Layout2>
+                <Outlet />
+            </Layout2>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </PersistQueryClientProvider>
     );
 }

@@ -26,6 +26,10 @@ export function Comments({ id, kids }: { id?: string; kids?: string[] }) {
 }
 
 export function CommentsList({ comments }: { comments: Comment[] }) {
+    if (!Array.isArray(comments)) {
+        return null;
+    }
+
     return comments.map((comment: Comment) => {
         return (
             <CommentItem

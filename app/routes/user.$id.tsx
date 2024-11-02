@@ -1,33 +1,57 @@
-import { type LoaderFunction, type MetaFunction, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { useQuery } from "@tanstack/react-query";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ClientLoaderFunctionArgs } from "@remix-run/react";
+import { LRUCache } from "lru-cache";
+import { cacheClientLoader, useCachedLoaderData } from "remix-client-cache";
 import { UserItem } from "~/components/User";
 import { fetchData } from "~/lib/fetch-data";
 import type { User } from "~/types/User";
 
+// Create LRU Cache with options
+const userCache = new LRUCache<string, User>({
+    // Maximum number of items to store in the cache
+    max: 1000,
+
+    // How long to live in milliseconds (e.g., 5 minutes)
+    ttl: 1000 * 60 * 5,
+
+    // Function to call when items are evicted
+    updateAgeOnGet: true,
+});
+
+// Helper function to generate cache key
+const getCacheKey = (id: string) => `user-${id}`;
+
 export const loader: LoaderFunction = async ({ params }) => {
     const id = params.id;
-    const user = await fetchData<User>(`user/${id}`);
-    return json({ id, user });
+
+    if (!id) return null;
+
+    // Generate cache key for this request
+    const cacheKey = getCacheKey(id);
+
+    // Try to get posts from cache first
+    let user = userCache.get(cacheKey);
+
+    // If not in cache, fetch from API and store in cache
+    if (!user) {
+        user = await fetchData<User>(`user/${id}`);
+        userCache.set(cacheKey, user);
+    }
+
+    return { id, user };
 };
+
+// Caches the loader data on the client
+export const clientLoader = (args: ClientLoaderFunctionArgs) =>
+    cacheClientLoader(args);
+clientLoader.hydrate = true;
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
     return [{ title: `Hacker News: ${data.id}` }];
 };
 
 export default function UserRoute() {
-    const { id, user } = useLoaderData<typeof loader>();
+    const { user } = useCachedLoaderData<typeof loader>();
 
-    const { data } = useQuery({
-        queryKey: ["user", id],
-        queryFn: async () => {
-            if (!id) return null;
-            return await fetchData<User>(`user/${id}`);
-        },
-        initialData: user,
-    });
-
-    if (!data) return null;
-
-    return <UserItem user={data} />;
+    return <UserItem user={user} />;
 }

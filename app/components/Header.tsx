@@ -3,7 +3,7 @@ import { capitalize } from "radash";
 import logo from "../assets/icon.png";
 import styles from "./Header.module.css";
 
-const items = ["top", "ask", "show", "best", "new"];
+export const items = ["top", "ask", "show", "best", "new"];
 
 export function Header() {
     return (
