@@ -2,7 +2,6 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import {
     Await,
     type ClientLoaderFunctionArgs,
-    defer,
     useRevalidator,
 } from "@remix-run/react";
 import { LRUCache } from "lru-cache";
@@ -50,15 +49,15 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     const comments = fetchComments(post.kids ?? []);
 
-    return defer({
+    return {
         id,
         post,
         comments,
-    });
+    };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-    return [{ title: `Hacker News: ${data.post.title}` }];
+    return [{ title: `Hacker News: ${data?.post.title}` }];
 };
 
 // Caches the loader data on the client
