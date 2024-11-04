@@ -1,4 +1,4 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
 import {
     type ClientLoaderFunctionArgs,
     useRevalidator,

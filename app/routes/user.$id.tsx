@@ -1,4 +1,4 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
 import type { ClientLoaderFunctionArgs } from "@remix-run/react";
 import { LRUCache } from "lru-cache";
 import { cacheClientLoader, useCachedLoaderData } from "remix-client-cache";
