@@ -1,7 +1,12 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
-        "ignore": ["node_modules/**", "package.json", "build"]
+        "ignore": [
+            "node_modules/**",
+            "package.json",
+            "build",
+            "worker-configuration.d.ts"
+        ]
     },
     "organizeImports": {
         "enabled": true

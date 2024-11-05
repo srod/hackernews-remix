@@ -6,6 +6,7 @@ import {
 import { LRUCache } from "lru-cache";
 import { useCallback } from "react";
 import { cacheClientLoader, useCachedLoaderData } from "remix-client-cache";
+import { Comments } from "~/components/Comments";
 import { PostItem } from "~/components/Post";
 import { useVisibilityChange } from "~/hooks/useVisibilityChange";
 import { fetchData } from "~/lib/fetch-data";
@@ -16,11 +17,8 @@ const postCache = new LRUCache<string, Post>({
     // Maximum number of items to store in the cache
     max: 1000,
 
-    // How long to live in milliseconds (e.g., 5 minutes)
-    ttl: 1000 * 60 * 5,
-
-    // Function to call when items are evicted
-    updateAgeOnGet: true,
+    // How long to live in milliseconds (e.g., 1 minute)
+    ttl: 1000 * 60 * 1,
 });
 
 // Helper function to generate cache key
@@ -43,12 +41,9 @@ export const loader: LoaderFunction = async ({ params }) => {
         postCache.set(cacheKey, post);
     }
 
-    // const comments = fetchComments(post.kids ?? []);
-
     return {
         id,
         post,
-        // comments,
     };
 };
 
@@ -62,7 +57,7 @@ export const clientLoader = (args: ClientLoaderFunctionArgs) =>
 clientLoader.hydrate = true;
 
 export default function PostRoute() {
-    const { post } = useCachedLoaderData<typeof loader>();
+    const { id, post } = useCachedLoaderData<typeof loader>();
 
     const { revalidate } = useRevalidator();
 
@@ -75,13 +70,7 @@ export default function PostRoute() {
     return (
         <div>
             <PostItem post={post} showText={true} />
-            {/* <Suspense fallback={<Loading />}>
-                <Await resolve={comments}>
-                    {(resolvedValue) => (
-                        <CommentsList comments={resolvedValue} />
-                    )}
-                </Await>
-            </Suspense> */}
+            <Comments id={id} kids={post.kids} />
         </div>
     );
 }

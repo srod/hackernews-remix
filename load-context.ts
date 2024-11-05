@@ -1,6 +1,7 @@
 import type { AppLoadContext } from "@remix-run/cloudflare";
 import type { PlatformProxy } from "wrangler";
 
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 type Env = {};
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;

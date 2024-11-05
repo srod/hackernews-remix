@@ -13,9 +13,6 @@ const userCache = new LRUCache<string, User>({
 
     // How long to live in milliseconds (e.g., 5 minutes)
     ttl: 1000 * 60 * 5,
-
-    // Function to call when items are evicted
-    updateAgeOnGet: true,
 });
 
 // Helper function to generate cache key

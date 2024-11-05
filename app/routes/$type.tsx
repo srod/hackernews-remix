@@ -32,11 +32,8 @@ const postsCache = new LRUCache<string, Post[]>({
     // Maximum number of items to store in the cache
     max: 1000,
 
-    // How long to live in milliseconds (e.g., 5 minutes)
-    ttl: 1000 * 60 * 5,
-
-    // Function to call when items are evicted
-    updateAgeOnGet: true,
+    // How long to live in milliseconds (e.g., 1 minute)
+    ttl: 1000 * 60 * 1,
 });
 
 // Helper function to generate cache key
@@ -59,7 +56,6 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
     // If not in cache, fetch from API and store in cache
     if (!posts) {
-        // console.log("fetching posts");
         posts = await postsFetcher(type as PostTypes, page);
         postsCache.set(cacheKey, posts);
     }

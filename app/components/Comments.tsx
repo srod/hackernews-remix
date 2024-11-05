@@ -3,9 +3,10 @@ import { fetchComments } from "~/lib/fetch-comments";
 import type { Comment } from "~/types/Comment";
 import { CommentItem } from "./Comment";
 import styles from "./Comments.module.css";
+import { Loading } from "./Loading";
 
 export function Comments({ id, kids }: { id?: string; kids?: string[] }) {
-    const { data: comments } = useQuery({
+    const { data: comments, isLoading } = useQuery({
         queryKey: ["comments", id],
         queryFn: async () => {
             if (!kids?.length) return [];
@@ -17,6 +18,8 @@ export function Comments({ id, kids }: { id?: string; kids?: string[] }) {
         },
         enabled: !!kids,
     });
+
+    if (isLoading) return <Loading />;
 
     return (
         <div className={styles.comments}>
