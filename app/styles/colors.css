@@ -2,13 +2,13 @@
     --font: "Source Sans 3", sans-serif;
     --color-white: #fff;
     --color-grey: #9fa0a5;
-    --color-grey-light: rgb(23, 24, 28);
+    --color-grey-light: #17181c;
     --color-black: #000;
     --color-blue-petrol: #1d4851;
-    --primary: var(--color-grey);
+    --primary: #c0c2c7;
     --primary-light: var(--color-grey-light);
     --secondary: var(--color-orange);
-    --background: #1a1a1a;
+    --background: #17181c;
     --inline-bg: #1a1a1a;
     --color-orange: #ff6600;
 }

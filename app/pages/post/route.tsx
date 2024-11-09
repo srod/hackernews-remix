@@ -68,9 +68,9 @@ export default function PostRoute() {
     useVisibilityChange(handleVisibilityChange);
 
     return (
-        <div>
+        <>
             <PostItem post={post} showText={true} />
             <Comments id={id} kids={post.kids} />
-        </div>
+        </>
     );
 }

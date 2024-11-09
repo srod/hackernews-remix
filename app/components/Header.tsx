@@ -25,7 +25,11 @@ export function Header() {
                         key={item}
                         to={`/${item}`}
                         className={({ isActive, isPending }) =>
-                            isPending ? "" : isActive ? styles.header__link : ""
+                            isPending
+                                ? ""
+                                : isActive
+                                  ? styles.header__linkActive
+                                  : styles.header__link
                         }
                         viewTransition
                     >
