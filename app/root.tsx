@@ -17,7 +17,6 @@ import {
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css?url";
 import { type ReactNode, useEffect } from "react";
-import { Layout as Layout2 } from "./components/Layout";
 import globalCssUrl from "./styles/global.css?url";
 
 export const links: LinksFunction = () => [
@@ -105,9 +104,7 @@ export default function App() {
             client={queryClient}
             persistOptions={persistOptions}
         >
-            <Layout2>
-                <Outlet />
-            </Layout2>
+            <Outlet />
             <ReactQueryDevtools initialIsOpen={false} />
         </PersistQueryClientProvider>
     );

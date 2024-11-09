@@ -9,9 +9,9 @@ import { useCallback } from "react";
 import { cacheClientLoader, useCachedLoaderData } from "remix-client-cache";
 import { items } from "~/components/Header";
 import { More } from "~/components/More";
-import { PostItem } from "~/components/Post";
 import { useVisibilityChange } from "~/hooks/useVisibilityChange";
 import { fetchData } from "~/lib/fetch-data";
+import { PostItem } from "~/pages/post/components/Post";
 import type { Post, PostTypes } from "~/types/Post";
 
 const POST_PER_PAGE = 30;

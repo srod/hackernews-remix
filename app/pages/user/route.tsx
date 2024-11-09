@@ -2,8 +2,8 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
 import type { ClientLoaderFunctionArgs } from "@remix-run/react";
 import { LRUCache } from "lru-cache";
 import { cacheClientLoader, useCachedLoaderData } from "remix-client-cache";
-import { UserItem } from "~/components/User";
 import { fetchData } from "~/lib/fetch-data";
+import { UserItem } from "~/pages/user/components/User";
 import type { User } from "~/types/User";
 
 // Create LRU Cache with options

@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react";
 import { formatDistance } from "date-fns";
+import { CommentsList } from "~/pages/post/components/Comments";
 import type { Comment } from "~/types/Comment";
 import styles from "./Comment.module.css";
-import { CommentsList } from "./Comments";
 
 export function CommentItem({ comment }: { comment: Comment }) {
     return (

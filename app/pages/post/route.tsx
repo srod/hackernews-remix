@@ -6,10 +6,10 @@ import {
 import { LRUCache } from "lru-cache";
 import { useCallback } from "react";
 import { cacheClientLoader, useCachedLoaderData } from "remix-client-cache";
-import { Comments } from "~/components/Comments";
-import { PostItem } from "~/components/Post";
 import { useVisibilityChange } from "~/hooks/useVisibilityChange";
 import { fetchData } from "~/lib/fetch-data";
+import { Comments } from "~/pages/post/components/Comments";
+import { PostItem } from "~/pages/post/components/Post";
 import type { Post } from "~/types/Post";
 
 // Create LRU Cache with options

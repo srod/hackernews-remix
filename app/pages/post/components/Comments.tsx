@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { Loading } from "~/components/Loading";
 import { fetchComments } from "~/lib/fetch-comments";
+import { CommentItem } from "~/pages/post/components/Comment";
 import type { Comment } from "~/types/Comment";
-import { CommentItem } from "./Comment";
 import styles from "./Comments.module.css";
-import { Loading } from "./Loading";
 
 export function Comments({ id, kids }: { id?: string; kids?: string[] }) {
     const { data: comments, isLoading } = useQuery({
