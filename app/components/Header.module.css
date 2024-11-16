@@ -28,9 +28,9 @@
     gap: 20px;
 }
 
-.header__link {
+/* .header__link {
     color: var(--color-white);
-}
+} */
 
 .header__linkActive {
     color: var(--secondary);
